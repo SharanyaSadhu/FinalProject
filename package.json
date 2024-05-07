@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@azure/ai-form-recognizer": "^3.2.0",
+    "@azure/identity": "^4.2.0",
+    "axios": "^1.6.8",
+    "express": "^4.19.2",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
+  }
+}
