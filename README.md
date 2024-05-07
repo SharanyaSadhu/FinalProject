@@ -35,6 +35,7 @@ To run this API first replace the "endpoint" parameter in the js file to your Az
 Then add the authentication key to your system or environment variable. Because in the code it is being fetched from process.env.FORM_RECOGNIZER_API_KEY.
 
 Then run # node finalproject.js and it will start the server at port 5000 <br />
+Access it at https:URL:5000/api-docs <br />
 To execute the API enter the document url in the body and hit execute. It will return the text contained in the uploaded document. <br />
 
 # Note 
