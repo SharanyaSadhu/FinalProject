@@ -10,7 +10,7 @@ app.use(express.json());
 
 
 const endpoint = "https://finalprojectsharanyasadhu.cognitiveservices.azure.com/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2024-02-29-preview";
-const key = "f21037bc9c804a8faf7435d3492d1a3c";
+const key = process.env.FORM_RECOGNIZER_API_KEY;
 
 
 const getAnalysisResults = async (resultId) => {
