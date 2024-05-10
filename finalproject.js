@@ -6,30 +6,45 @@ const yaml = require('yamljs');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// Azure Form Recognizer credentials and endpoint
-const endpoint = "https://finalprojectsharanyasadhu.cognitiveservices.azure.com/";
-const key = process.env.FORM_RECOGNIZER_API_KEY;
 
-// Function to analyze document from URL
-const analyzeDocumentFromUrl = async (formUrl) => {
+const endpoint = "https://finalprojectsharanyasadhu.cognitiveservices.azure.com/documentintelligence/documentModels/prebuilt-read:analyze?api-version=2024-02-29-preview";
+const key = "f21037bc9c804a8faf7435d3492d1a3c";
+
+
+const getAnalysisResults = async (resultId) => {
     try {
-        const response = await axios.post(`${endpoint}`, { formUrl }, {
+        const response = await axios.get(resultId, {
+            headers: {
+                'Ocp-Apim-Subscription-Key': key,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error retrieving analysis results:', error);
+        throw error;
+    }
+};
+
+
+const analyzeDocumentFromUrl = async (urlSource) => {
+    try {
+        const response = await axios.post(`${endpoint}`, { urlSource }, {
             headers: {
                 'Ocp-Apim-Subscription-Key': key,
                 'Content-Type': 'application/json'
             }
         });
-        return response.data.content;
+        return response.headers['operation-location'];
+
     } catch (error) {
         console.error('Error analyzing document:', error);
         throw error;
     }
 };
 
-// Route to analyze document
+
 app.post('/analyze', async (req, res) => {
     const  { formUrl }  = req.body;
     if (!formUrl) {
@@ -44,11 +59,22 @@ app.post('/analyze', async (req, res) => {
     }
 });
 
-// Swagger UI setup
+app.get('/analyzeResults/:resultId', async (req, res) => {
+    const { resultId } = req.params;
+
+    try {
+        const analysisResult = await getAnalysisResults(resultId);
+        res.json({ analysisResult });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 const swaggerDocument = yaml.load('./swagger.yaml');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Start server
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
