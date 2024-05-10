@@ -16,7 +16,13 @@ Endpoint: '/analyze' <br />
 Method: 'POST' <br />
 Description: Analyzes the document from the provided URL and outputs the text contained in it. <br />
 Request body: "formUrl": This is the URL of the document to be analyzed. <br />
-Response: Extracted content from the document
+Response: The URL where the preview content is hosted in Azure
+
+Endpoint: '/analyzeResults/{resultId}' <br />
+Method: 'GET' <br />
+Input: The response content from previous POST request <br />
+For Example if the response is {"content: "URL"}, please input this URL <br />
+Description: This gives the result of analysis and the body contains the text present in the provided pdf or png or jpg file
 
 # Error Handling
 
